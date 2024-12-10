@@ -14,8 +14,6 @@ function Comprar() {
 
     const [enderecos, setEnderecos] = useState([]); // Lista de endereços do usuário
     const [enderecoSelecionado, setEnderecoSelecionado] = useState(""); // Endereço selecionado
-    const [novoEndereco, setNovoEndereco] = useState(false); // Controle para exibir formulário de novo endereço
-    const [novoEnderecoData, setNovoEnderecoData] = useState({ rua: "", numero: "", cidade: "", estado: "" }); // Novo endereço
 
     const navigate = useNavigate();
 
@@ -102,37 +100,6 @@ function Comprar() {
         }
     }
 
-    async function saveEndereco(e) {
-        e.preventDefault();
-
-        try {
-            const response = await fetch('http://localhost:5000/api/endereco', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...novoEnderecoData, id: parseInt(id) }), // Inclui o ID do usuário
-            });
-
-            if (response.ok) {
-                setNovoEndereco(false);
-                setNovoEnderecoData({ rua: "", numero: "", cidade: "", estado: "" }); // Limpa o formulário
-                const data = await response.json(); // Atualiza a lista de endereços
-                setEnderecos([...enderecos, data]);
-                toast.success("Endereço adicionado com sucesso!", {
-                    position: "top-center",
-                    autoClose: 2500,
-                    theme: "dark",
-                });
-            } else {
-                throw new Error("Erro ao salvar o novo endereço.");
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Erro ao salvar o novo endereço.");
-        }
-    }
-    
 
     function finalizado() {
         notify()
@@ -267,8 +234,9 @@ function Comprar() {
 
 
 
-                <ToastContainer />
+
             </div>
+            <ToastContainer />
         </div>
     );
 }
